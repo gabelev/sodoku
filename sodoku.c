@@ -5,6 +5,7 @@
 int** read_input(char *file_name);
 int** create_array(int size);
 int check_board(int** board, int x, int y, int value);
+int* get_range(int num);
 
 int main(int argc, char* argv[]) 
 {
@@ -25,9 +26,7 @@ int** backtracking_solver(int** board)
             if (board[i][j] != 0) {
                 continue;
             }
-            // check row
-            // check colunm
-            // check box
+            // check board if ok to add number;
             // if ok place a 1 in cell and go on
             // if in next check ""
         }
@@ -37,7 +36,10 @@ int** backtracking_solver(int** board)
 
 int check_board(int** board, int x, int y, int value)
 {
-    int i;
+    int i, j;
+    int* x_range;
+    int* y_range;
+
     // check row and column
     for (i = 0; i < BOARD; i++) 
     {
@@ -45,10 +47,38 @@ int check_board(int** board, int x, int y, int value)
         {
             return 0;
         }
-
+    }
+    // check box
+    x_range = get_range(x);
+    y_range = get_range(y);
+    for (i = x_range[0]; i <= x_range[1]; i++) 
+    {
+        for (j = y_range[0]; j <= y_range[1]; j++) 
+        {
+            if (board[i][j] == value) 
+            {
+                return 0;
+            }
+        }
     }
     return 1;
+}
 
+int* get_range(int num) 
+{
+    int start, end;
+    int* range = malloc(2 * sizeof(int));
+    if (num < 3) {
+        range[0] = 0;
+        range[1] = 2;
+    } else if (num > 3 && num < 6){
+        range[0] = 3;
+        range[1] = 5;
+    } else if (num > 6 && num < 8){
+        range[0] = 6;
+        range[1] = 7;
+    }
+    return range;
 }
 
 int** read_input(char *file_name) 
