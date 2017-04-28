@@ -4,6 +4,7 @@
 
 int** read_input(char *file_name);
 int** create_array(int size);
+int check_board(int** board, int x, int y, int value);
 
 int main(int argc, char* argv[]) 
 {
@@ -11,6 +12,43 @@ int main(int argc, char* argv[])
     board = read_input(argv[1]);
     
     return 0;
+}
+
+int** backtracking_solver(int** board) 
+{
+    int i, j;
+    int** remove_me;
+    for (i = 0; i <= BOARD; i++) 
+    {
+        for (j = 0; j <= BOARD; j++) 
+        {
+            if (board[i][j] != 0) {
+                continue;
+            }
+            // check row
+            // check colunm
+            // check box
+            // if ok place a 1 in cell and go on
+            // if in next check ""
+        }
+    }
+    return remove_me; 
+}
+
+int check_board(int** board, int x, int y, int value)
+{
+    int i;
+    // check row and column
+    for (i = 0; i < BOARD; i++) 
+    {
+        if ((board[y][i] == value) || (board[i][x] == value))
+        {
+            return 0;
+        }
+
+    }
+    return 1;
+
 }
 
 int** read_input(char *file_name) 
