@@ -4,7 +4,7 @@
 
 int** read_input(char *file_name);
 int** create_array(int size);
-int check_board(int** board, int x, int y, int value);
+int check_position(int** board, int x, int y, int value);
 int* get_range(int num);
 
 int main(int argc, char* argv[]) 
@@ -17,7 +17,11 @@ int main(int argc, char* argv[])
 
 int** backtracking_solver(int** board) 
 {
+    // TODO: add iteration counter. 
+    // maybe watch it happen in real time?
     int i, j;
+    // value stores
+    int prev_value, cur_val = 1;
     int** remove_me;
     for (i = 0; i <= BOARD; i++) 
     {
@@ -34,7 +38,7 @@ int** backtracking_solver(int** board)
     return remove_me; 
 }
 
-int check_board(int** board, int x, int y, int value)
+int check_position(int** board, int x, int y, int value)
 {
     int i, j;
     int* x_range;
