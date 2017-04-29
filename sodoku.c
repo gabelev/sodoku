@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define BOARD 9
+#define EMPTY 0
+#define TRUE 1
+#define FALSE 0
 
 int** read_input(char *file_name);
 int** create_array(int size);
 int check_position(int** board, int x, int y, int value);
 int* get_range(int num);
-typedef struct point point;
-struct point next_cell(int** board);
+int backtracking_solver(int** board);
+int find_next_cell(int** board, int next_x, int next_y);
 
 
 int main(int argc, char* argv[]) 
@@ -18,51 +21,38 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-struct point 
+int find_next_cell(int** board, int next_x, int next_y) 
 {
-    int x;
-    int y;
-    int value;
-};
-
-struct point next_cell(int** board) 
-{
-    struct point point;
-    int i, j;
-    for (i = 0; i <= BOARD; i++) 
-    {
-        for (j = 0; j <= BOARD; j++) 
-        {
-            if (board[i][j] == 0) {
-                point.x = i;
-                point.y = j;
-            }
-        }
-    }
-    return point;
+   for (next_x = 0; next_x < BOARD; next_x++)
+   { 
+       for (next_y = 0; next_y < BOARD; next_y++) 
+       { 
+           if (board[next_x][next_y] == EMPTY)
+               return TRUE;
+       } 
+   }
+   return FALSE;
 }
 
-int** backtracking_solver(int** board) 
+int backtracking_solver(int** board) 
 {
-    // TODO: add iteration counter. 
-    // maybe watch it happen in real time?
-    int i, j;
-    // value stores
-    int prev_value, cur_val = 1;
-    int** remove_me;
-    for (i = 0; i <= BOARD; i++) 
+    int x, y, value;
+    if (!find_next_cell(board, x, y)) 
     {
-        for (j = 0; j <= BOARD; j++) 
-        {
-            if (board[i][j] != 0) {
-                continue;
-            }
-            // check board if ok to add number;
-            // if ok place a 1 in cell and go on
-            // if in next check ""
-        }
+        return TRUE; 
     }
-    return remove_me; 
+    for (value = 1; value <= BOARD; value++) 
+    {
+        if (check_position(board, x, y, value)) {
+            board[x][y] = value;
+            if (backtracking_solver(board)) 
+            {
+                return TRUE;
+            }
+            board[x][y] = EMPTY;
+        } 
+    }
+    return FALSE; 
 }
 
 int check_position(int** board, int x, int y, int value)
@@ -76,7 +66,7 @@ int check_position(int** board, int x, int y, int value)
     {
         if (board[y][i] == value)
         {
-            return 0;
+            return FALSE;
         }
     }
     // check column
@@ -84,7 +74,7 @@ int check_position(int** board, int x, int y, int value)
     {
         if (board[i][x] == value)
         {
-            return 0;
+            return FALSE;
         }
     }
     // check box
@@ -96,11 +86,11 @@ int check_position(int** board, int x, int y, int value)
         {
             if (board[i][j] == value) 
             {
-                return 0;
+                return FALSE;
             }
         }
     }
-    return 1;
+    return TRUE;
 }
 
 int* get_range(int num) 
