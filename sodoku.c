@@ -6,6 +6,9 @@ int** read_input(char *file_name);
 int** create_array(int size);
 int check_position(int** board, int x, int y, int value);
 int* get_range(int num);
+typedef struct point point;
+struct point next_cell(int** board);
+
 
 int main(int argc, char* argv[]) 
 {
@@ -13,6 +16,30 @@ int main(int argc, char* argv[])
     board = read_input(argv[1]);
     
     return 0;
+}
+
+struct point 
+{
+    int x;
+    int y;
+    int value;
+};
+
+struct point next_cell(int** board) 
+{
+    struct point point;
+    int i, j;
+    for (i = 0; i <= BOARD; i++) 
+    {
+        for (j = 0; j <= BOARD; j++) 
+        {
+            if (board[i][j] == 0) {
+                point.x = i;
+                point.y = j;
+            }
+        }
+    }
+    return point;
 }
 
 int** backtracking_solver(int** board) 
