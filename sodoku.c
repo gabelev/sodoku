@@ -31,6 +31,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+// TODO: fix this guy
 int find_next_cell(int** board, int next_x, int next_y) 
 {
    for (next_x = 0; next_x < BOARD; next_x++)
