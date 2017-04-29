@@ -44,10 +44,18 @@ int check_position(int** board, int x, int y, int value)
     int* x_range;
     int* y_range;
 
-    // check row and column
+    // check row
     for (i = 0; i < BOARD; i++) 
     {
-        if ((board[y][i] == value) || (board[i][x] == value))
+        if (board[y][i] == value)
+        {
+            return 0;
+        }
+    }
+    // check column
+    for (i = 0; i < BOARD; i++) 
+    {
+        if (board[i][x] == value)
         {
             return 0;
         }
