@@ -11,12 +11,22 @@ int check_position(int** board, int x, int y, int value);
 int* get_range(int num);
 int backtracking_solver(int** board);
 int find_next_cell(int** board, int next_x, int next_y);
-
+void print_board(int** board);
 
 int main(int argc, char* argv[]) 
 {
     int** board;
     board = read_input(argv[1]);
+    printf("Input: \n");
+    print_board(board);
+    if (backtracking_solver(board)) 
+    {
+        printf("Solved! \n");
+        print_board(board);
+    }
+    else {
+        printf("Cannot be solved.");
+    }
     
     return 0;
 }
@@ -137,3 +147,18 @@ int** create_array(int size) {
     }
     return multi_array;
 }
+
+void print_board(int **board) {
+    int i, j;
+    for (i = 0; i < BOARD; i++) {
+        for (j = 0; j < BOARD; j++) {
+            if (j == BOARD - 1) {
+                printf("%d\n", board[i][j]);
+                
+            } else {
+                printf("%d ", board[i][j]);
+            }
+        }
+    }
+}
+
