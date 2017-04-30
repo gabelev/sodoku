@@ -10,7 +10,7 @@ int** create_array(int size);
 int check_position(int** board, int x, int y, int value);
 int* get_range(int num);
 int backtracking_solver(int** board);
-int find_next_cell(int** board, int next_x, int next_y);
+int find_next_cell(int** board, int* next_x, int* next_y);
 void print_board(int** board);
 
 int main(int argc, char* argv[]) 
@@ -31,30 +31,41 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-// TODO: fix this guy
-int find_next_cell(int** board, int next_x, int next_y) 
+int find_next_cell(int** board, int* next_x, int* next_y) 
 {
-   for (next_x = 0; next_x < BOARD; next_x++)
-   { 
-       for (next_y = 0; next_y < BOARD; next_y++) 
-       { 
-           if (board[next_x][next_y] == EMPTY)
-               return TRUE;
-       } 
-   }
-   return FALSE;
+    int x, y;
+    for (x = *next_x; x < BOARD; x++)
+    { 
+        for (y = *next_x; y < BOARD; y++) 
+        { 
+             if (board[x][y] == EMPTY)
+             {
+                 *next_x = x;
+                 *next_y = y;
+                 printf("debug next cell %d %d\n", *next_x, *next_y);
+                 return TRUE;
+             }
+        } 
+    }
+    return FALSE;
 }
 
 int backtracking_solver(int** board) 
 {
     int x, y, value;
-    if (!find_next_cell(board, x, y)) 
+    int* next_x = calloc(1, sizeof(int));
+    int* next_y = calloc(1, sizeof(int));
+
+    if (!find_next_cell(board, next_x, next_y)) 
     {
         return TRUE; 
     }
+    find_next_cell(board, next_x, next_y);
+    printf("debug next cell in solver %d %d\n", *next_x, *next_y);
     for (value = 1; value <= BOARD; value++) 
     {
-        if (check_position(board, x, y, value)) {
+        printf("debug value: %d\n", value);
+        if (check_position(board, *next_x, *next_y, value)) {
             board[x][y] = value;
             if (backtracking_solver(board)) 
             {
@@ -77,6 +88,7 @@ int check_position(int** board, int x, int y, int value)
     {
         if (board[y][i] == value)
         {
+            printf("row: %d, %d, %d\n", i, y, value);
             return FALSE;
         }
     }
@@ -85,6 +97,7 @@ int check_position(int** board, int x, int y, int value)
     {
         if (board[i][x] == value)
         {
+            printf("col\n");
             return FALSE;
         }
     }
@@ -97,6 +110,7 @@ int check_position(int** board, int x, int y, int value)
         {
             if (board[i][j] == value) 
             {
+                printf("box\n");
                 return FALSE;
             }
         }
