@@ -61,7 +61,7 @@ int backtracking_solver(int** board)
         return TRUE; 
     } 
     find_next_cell(board, next_x, next_y);
-    // printf("next empty cell (%d, %d)\n", *next_x, *next_y);
+    printf("next empty cell (%d, %d)\n", *next_x, *next_y);
     printf(". . . . . . . . . \n");
     print_board(board);
     for (value = 1; value <= BOARD; value++) 
@@ -69,15 +69,17 @@ int backtracking_solver(int** board)
         // printf("debug value: %d at (%d, %d)\n", value, *next_x, *next_y);
         if (check_position(board, *next_x, *next_y, value)) 
         {
-            board[x][y] = value;
+            board[*next_x][*next_y] = value;
             if (backtracking_solver(board)) 
             {
                 return TRUE;
             }
-            board[x][y] = EMPTY;
         }
+        board[*next_x][*next_y] = EMPTY;
     }
-    return FALSE; 
+    free(next_x);
+    free(next_y);
+    return 0;
 }
 
 int check_position(int** board, int x, int y, int value)
@@ -153,6 +155,7 @@ int** read_input(char *file_name)
             fscanf(input_file, "%1d", &board[i][j]);
         }
     } 
+    fclose(input_file);
     return board;
 }
 
