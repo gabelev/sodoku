@@ -15,8 +15,24 @@ void print_board(int** board);
 
 int main(int argc, char* argv[]) 
 {
-    int** board;
-    board = read_input(argv[1]);
+    //int** board;
+    // board = read_input(argv[1]);
+    FILE *input_file = fopen(argv[1], "r");
+    int** board = create_array(BOARD);
+    int i, j;
+    int sum;
+    if (input_file == NULL) {
+        printf("No file to read");
+        return 0;
+    }
+    while(!feof(input_file)) {
+        for (i = 0; i < BOARD; i++) {
+            for (j = 0; j < BOARD; j++)
+            {
+                fscanf(input_file, "%1d", &board[i][j]);
+            }
+        }
+    } 
     printf("Input: \n");
     print_board(board);
     if (backtracking_solver(board)) 
