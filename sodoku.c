@@ -167,8 +167,7 @@ void print_board(int **board) {
     for (i = 0; i < BOARD; i++) {
         for (j = 0; j < BOARD; j++) {
             if (j == BOARD - 1) {
-                printf("%d\n", board[i][j]);
-                
+                printf("%d\n", board[i][j]); 
             } else {
                 printf("%d ", board[i][j]);
             }
