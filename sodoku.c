@@ -145,7 +145,7 @@ int** read_input(char *file_name)
     while(!feof(input_file)) {
         for (i = 0; i < BOARD; i++) {
             for (j = 0; j < BOARD; j++)
-            fscanf(input_file, "%1d", &board[i][j]);
+                fscanf(input_file, "%1d", &board[i][j]);
         }
     } 
     fclose(input_file);
