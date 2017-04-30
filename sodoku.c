@@ -55,7 +55,10 @@ int backtracking_solver(int** board)
     int row, col, value;
     int* next_row = calloc(1, sizeof(int));
     int* next_col = calloc(1, sizeof(int));
-
+    /*
+    if (board[0][3] == 4)
+        return TRUE;
+    */
     if (!find_next_cell(board, next_row, next_col)) 
     {
         return TRUE; 
@@ -74,12 +77,13 @@ int backtracking_solver(int** board)
             {
                 return TRUE;
             }
+            //board[*next_row][*next_col] = EMPTY;
         }
         board[*next_row][*next_col] = EMPTY;
     }
-    board[*next_row][*next_col] = EMPTY;
-    free(next_row);
-    free(next_col);
+    //board[*next_row][*next_col] = EMPTY;
+    //free(next_row);
+    //free(next_col);
     return FALSE;
 }
 
@@ -89,7 +93,6 @@ int check_position(int** board, int row, int col, int value)
     int* row_range;
     int* col_range;
     
-    // wrong!
     // check row
     for (i = 0; i < BOARD; i++) 
     {
@@ -117,11 +120,15 @@ int check_position(int** board, int row, int col, int value)
         {
             if (board[i][j] == value) 
             {
+                printf("debug col %d range: %d, %d\n", col, col_range[0], col_range[1]);
+                printf("debug row %d range: %d, %d\n", row, row_range[0], row_range[1]);
                 printf("fails box: %d at b[%d][%d]\n", value, i, j);
                 return FALSE;
             }
         }
     }
+    free(row_range);
+    free(col_range);
     return TRUE;
 }
 
@@ -132,10 +139,10 @@ int* get_range(int num)
     if (num < 3) {
         range[0] = 0;
         range[1] = 2;
-    } else if (num > 3 && num < 6){
+    } else if (num >= 3 && num < 6){
         range[0] = 3;
         range[1] = 5;
-    } else if (num > 6 && num <= 8){
+    } else if (num >= 6 && num < 9){
         range[0] = 6;
         range[1] = 8;
     }
