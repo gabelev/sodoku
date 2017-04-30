@@ -59,7 +59,7 @@ int backtracking_solver(int** board)
     if (!find_next_cell(board, next_x, next_y)) 
     {
         return TRUE; 
-    }
+    } 
     find_next_cell(board, next_x, next_y);
     // printf("next empty cell (%d, %d)\n", *next_x, *next_y);
     printf(". . . . . . . . . \n");
@@ -74,9 +74,6 @@ int backtracking_solver(int** board)
             {
                 return TRUE;
             }
-        }
-        else 
-        {
             board[x][y] = EMPTY;
         }
     }
