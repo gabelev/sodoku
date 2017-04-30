@@ -61,18 +61,24 @@ int backtracking_solver(int** board)
         return TRUE; 
     }
     find_next_cell(board, next_x, next_y);
-    // printf("debug next cell in solver %d %d\n", *next_x, *next_y);
+    // printf("next empty cell (%d, %d)\n", *next_x, *next_y);
+    printf(". . . . . . . . . \n");
+    print_board(board);
     for (value = 1; value <= BOARD; value++) 
     {
-        // printf("debug value: %d\n", value);
-        if (check_position(board, *next_x, *next_y, value)) {
+        // printf("debug value: %d at (%d, %d)\n", value, *next_x, *next_y);
+        if (check_position(board, *next_x, *next_y, value)) 
+        {
             board[x][y] = value;
             if (backtracking_solver(board)) 
             {
                 return TRUE;
             }
+        }
+        else 
+        {
             board[x][y] = EMPTY;
-        } 
+        }
     }
     return FALSE; 
 }
@@ -88,7 +94,7 @@ int check_position(int** board, int x, int y, int value)
     {
         if (board[y][i] == value)
         {
-            // printf("row: %d, %d, %d\n", i, y, value);
+            // printf("fails row: %d at (%d, %d)\n", value, i, y);
             return FALSE;
         }
     }
@@ -97,7 +103,7 @@ int check_position(int** board, int x, int y, int value)
     {
         if (board[i][x] == value)
         {
-            // printf("col\n");
+            // printf("fails col: %d at (%d, %d)\n", value, i, x);
             return FALSE;
         }
     }
@@ -110,7 +116,7 @@ int check_position(int** board, int x, int y, int value)
         {
             if (board[i][j] == value) 
             {
-                //printf("box: %d, %d, %d\n", i, j, value);
+                // printf("fails box: %d at (%d, %d)\n", value, i, j);
                 return FALSE;
             }
         }
