@@ -114,9 +114,9 @@ int* get_range(int num)
     } else if (num > 3 && num < 6){
         range[0] = 3;
         range[1] = 5;
-    } else if (num > 6 && num < 8){
+    } else if (num > 6 && num <= 8){
         range[0] = 6;
-        range[1] = 7;
+        range[1] = 8;
     }
     return range;
 }
