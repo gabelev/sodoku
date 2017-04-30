@@ -42,7 +42,6 @@ int find_next_cell(int** board, int* next_row, int* next_col)
              {
                  *next_row = row;
                  *next_col = col;
-                 // printf("debug next cell %d %d\n", *next_x, *next_y);
                  return TRUE;
              }
         } 
@@ -55,21 +54,13 @@ int backtracking_solver(int** board)
     int row, col, value;
     int* next_row = calloc(1, sizeof(int));
     int* next_col = calloc(1, sizeof(int));
-    /*
-    if (board[0][3] == 4)
-        return TRUE;
-    */
     if (!find_next_cell(board, next_row, next_col)) 
     {
         return TRUE; 
     } 
     find_next_cell(board, next_row, next_col);
-    printf("next empty cell b[%d][%d]\n", *next_row, *next_col);
-    printf(". . . . . . . . . \n");
-    print_board(board);
     for (value = 1; value <= BOARD; value++) 
     {
-        printf("debug value: %d at b[%d][%d]\n", value, *next_row, *next_col);
         if (check_position(board, *next_row, *next_col, value)) 
         {
             board[*next_row][*next_col] = value;
@@ -77,13 +68,11 @@ int backtracking_solver(int** board)
             {
                 return TRUE;
             }
-            //board[*next_row][*next_col] = EMPTY;
         }
         board[*next_row][*next_col] = EMPTY;
     }
-    //board[*next_row][*next_col] = EMPTY;
-    //free(next_row);
-    //free(next_col);
+    free(next_row);
+    free(next_col);
     return FALSE;
 }
 
@@ -98,7 +87,6 @@ int check_position(int** board, int row, int col, int value)
     {
         if (board[row][i] == value)
         {
-            printf("fails row: %d at b[%d][%d]\n", value, row, i);
             return FALSE;
         }
     }
@@ -107,7 +95,6 @@ int check_position(int** board, int row, int col, int value)
     {
         if (board[i][col] == value)
         {
-            printf("fails col: %d at b[%d][%d]\n", value, i, col);
             return FALSE;
         }
     }
@@ -120,9 +107,6 @@ int check_position(int** board, int row, int col, int value)
         {
             if (board[i][j] == value) 
             {
-                printf("debug col %d range: %d, %d\n", col, col_range[0], col_range[1]);
-                printf("debug row %d range: %d, %d\n", row, row_range[0], row_range[1]);
-                printf("fails box: %d at b[%d][%d]\n", value, i, j);
                 return FALSE;
             }
         }
