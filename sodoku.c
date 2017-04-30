@@ -10,7 +10,7 @@ int** create_array(int size);
 int check_position(int** board, int x, int y, int value);
 int* get_range(int num);
 int backtracking_solver(int** board);
-int find_next_cell(int** board, int* next_x, int* next_y);
+int find_next_cell(int** board, int* next_row, int* next_col);
 void print_board(int** board);
 
 int main(int argc, char* argv[]) 
@@ -31,17 +31,17 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-int find_next_cell(int** board, int* next_x, int* next_y) 
+int find_next_cell(int** board, int* next_row, int* next_col) 
 {
-    int x, y;
-    for (x = *next_x; x < BOARD; x++)
+    int row, col;
+    for (row = *next_row; row < BOARD; row++)
     { 
-        for (y = *next_x; y < BOARD; y++) 
+        for (col = *next_col; col < BOARD; col++) 
         { 
-             if (board[x][y] == EMPTY)
+             if (board[row][col] == EMPTY)
              {
-                 *next_x = x;
-                 *next_y = y;
+                 *next_row = row;
+                 *next_col = col;
                  // printf("debug next cell %d %d\n", *next_x, *next_y);
                  return TRUE;
              }
@@ -52,70 +52,72 @@ int find_next_cell(int** board, int* next_x, int* next_y)
 
 int backtracking_solver(int** board) 
 {
-    int x, y, value;
-    int* next_x = calloc(1, sizeof(int));
-    int* next_y = calloc(1, sizeof(int));
+    int row, col, value;
+    int* next_row = calloc(1, sizeof(int));
+    int* next_col = calloc(1, sizeof(int));
 
-    if (!find_next_cell(board, next_x, next_y)) 
+    if (!find_next_cell(board, next_row, next_col)) 
     {
         return TRUE; 
     } 
-    find_next_cell(board, next_x, next_y);
-    printf("next empty cell (%d, %d)\n", *next_x, *next_y);
+    find_next_cell(board, next_row, next_col);
+    printf("next empty cell b[%d][%d]\n", *next_row, *next_col);
     printf(". . . . . . . . . \n");
     print_board(board);
     for (value = 1; value <= BOARD; value++) 
     {
-        // printf("debug value: %d at (%d, %d)\n", value, *next_x, *next_y);
-        if (check_position(board, *next_x, *next_y, value)) 
+        printf("debug value: %d at b[%d][%d]\n", value, *next_row, *next_col);
+        if (check_position(board, *next_row, *next_col, value)) 
         {
-            board[*next_x][*next_y] = value;
+            board[*next_row][*next_col] = value;
             if (backtracking_solver(board)) 
             {
                 return TRUE;
             }
         }
-        board[*next_x][*next_y] = EMPTY;
+        board[*next_row][*next_col] = EMPTY;
     }
-    free(next_x);
-    free(next_y);
-    return 0;
+    board[*next_row][*next_col] = EMPTY;
+    free(next_row);
+    free(next_col);
+    return FALSE;
 }
 
-int check_position(int** board, int x, int y, int value)
+int check_position(int** board, int row, int col, int value)
 {
     int i, j;
-    int* x_range;
-    int* y_range;
-
+    int* row_range;
+    int* col_range;
+    
+    // wrong!
     // check row
     for (i = 0; i < BOARD; i++) 
     {
-        if (board[y][i] == value)
+        if (board[row][i] == value)
         {
-            // printf("fails row: %d at (%d, %d)\n", value, i, y);
+            printf("fails row: %d at b[%d][%d]\n", value, row, i);
             return FALSE;
         }
     }
     // check column
     for (i = 0; i < BOARD; i++) 
     {
-        if (board[i][x] == value)
+        if (board[i][col] == value)
         {
-            // printf("fails col: %d at (%d, %d)\n", value, i, x);
+            printf("fails col: %d at b[%d][%d]\n", value, i, col);
             return FALSE;
         }
     }
     // check box
-    x_range = get_range(x);
-    y_range = get_range(y);
-    for (i = x_range[0]; i <= x_range[1]; i++) 
+    row_range = get_range(row);
+    col_range = get_range(col);
+    for (i = row_range[0]; i <= row_range[1]; i++) 
     {
-        for (j = y_range[0]; j <= y_range[1]; j++) 
+        for (j = col_range[0]; j <= col_range[1]; j++) 
         {
             if (board[i][j] == value) 
             {
-                // printf("fails box: %d at (%d, %d)\n", value, i, j);
+                printf("fails box: %d at b[%d][%d]\n", value, i, j);
                 return FALSE;
             }
         }
