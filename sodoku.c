@@ -25,9 +25,8 @@ int main(int argc, char* argv[])
         print_board(board);
     }
     else {
-        printf("Cannot be solved.");
-    }
-    
+        printf("Cannot find a solution. Sorry.");
+    } 
     return 0;
 }
 
